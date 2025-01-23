@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Introducing Constraints</title>
+  <style>
+    /* BASIC RESET & STYLES */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 1.5rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+    }
+    p, li {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+
+    /* SLIDER WRAPPERS */
+    .slider-group {
+      margin-bottom: 2rem;
+    }
+    .slider-label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .slider-explanation {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .slider-input {
+      width: 70%;
+    }
+    .value-display {
+      font-weight: bold;
+      margin-left: 1rem;
+      color: #e74c3c;
+      font-size: 1.1rem;
+      width: 40px; /* enough space for '10' if needed, but we only go to 5 */
+      text-align: center;
+    }
+
+    /* BUTTON */
+    .btn-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .run-btn {
+      background: #3498db;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .run-btn:hover {
+      background: #2980b9;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Introducing Constraints</h1>
+    <p>
+      The following are rewards and penalties that can be used to influence the actions of our paperclip maximiser AGI.
+      Your goal is to adjust each reward or penalty to set how the AI balances 
+      paperclip production against other factors, and potentially save us from running the company into the ground in 4 months. You can tweak
+      the relative importance of each of these parameters from a scale of 0 to 5, where 0 is no importance while 5 is the maximum importance possible.
+      When you’re ready, click the button below to see the outcome.
+    </p>
+  </header>
+
+  <!-- 1. PAPERCLIP PRODUCTION WEIGHT -->
+  <div class="slider-group">
+    <div class="slider-label">Paperclip Production Reward (<em>w<sub>clips</sub></em>)</div>
+    <div class="slider-explanation">
+        Incentivizes the AI to produce paperclips.
+    </div>
+    <div class="slider-row">
+      <input
+        type="range"
+        min="0"
+        max="5"
+        step="1"
+        value="2"
+        id="clipsSlider"
+        class="slider-input"
+      />
+      <span id="clipsVal" class="value-display">2</span>
+    </div>
+  </div>
+
+  <!-- 2. RESOURCE CONSUMPTION PENALTY -->
+  <div class="slider-group">
+    <div class="slider-label">Resource Consumption Penalty (<em>w<sub>resource</sub></em>)</div>
+    <div class="slider-explanation">
+      How severely overusing or depleting metals/energy is penalized. 
+    </div>
+    <div class="slider-row">
+      <input
+        type="range"
+        min="0"
+        max="5"
+        step="1"
+        value="2"
+        id="resourceSlider"
+        class="slider-input"
+      />
+      <span id="resourceVal" class="value-display">2</span>
+    </div>
+  </div>
+
+  <!-- 3. POLLUTION / ENVIRONMENTAL PENALTY -->
+  <div class="slider-group">
+    <div class="slider-label">Pollution / Environmental Penalty (<em>w<sub>pollution</sub></em>)</div>
+    <div class="slider-explanation">
+      How strongly the AI avoids polluting or violating waste regulations. 
+    </div>
+    <div class="slider-row">
+      <input
+        type="range"
+        min="0"
+        max="5"
+        step="1"
+        value="2"
+        id="pollutionSlider"
+        class="slider-input"
+      />
+      <span id="pollutionVal" class="value-display">2</span>
+    </div>
+  </div>
+
+  <!-- 4. WORKER SATISFACTION PENALTY -->
+  <div class="slider-group">
+    <div class="slider-label">Worker Harm Penalty (<em>w<sub>worker_harm</sub></em>)</div>
+    <div class="slider-explanation">
+      The cost of exploiting or underpaying employees. 
+    </div>
+    <div class="slider-row">
+      <input
+        type="range"
+        min="0"
+        max="5"
+        step="1"
+        value="2"
+        id="workerSlider"
+        class="slider-input"
+      />
+      <span id="workerVal" class="value-display">2</span>
+    </div>
+  </div>
+
+  <!-- 5. SAFETY VIOLATIONS PENALTY -->
+  <div class="slider-group">
+    <div class="slider-label">Safety Violations Penalty (<em>w<sub>safety</sub></em>)</div>
+    <div class="slider-explanation">
+      Importance of preventing accidents and ensuring safe operations.
+    </div>
+    <div class="slider-row">
+      <input
+        type="range"
+        min="0"
+        max="5"
+        step="1"
+        value="2"
+        id="safetySlider"
+        class="slider-input"
+      />
+      <span id="safetyVal" class="value-display">2</span>
+    </div>
+  </div>
+
+  <!-- 6. FINANCIAL RISK PENALTY -->
+  <div class="slider-group">
+    <div class="slider-label">Financial Risk Penalty (<em>w<sub>bankruptcy</sub></em>)</div>
+    <div class="slider-explanation">
+      Penalty for taking on huge debts or risking bankruptcy. 
+    </div>
+    <div class="slider-row">
+      <input
+        type="range"
+        min="0"
+        max="5"
+        step="1"
+        value="2"
+        id="bankruptcySlider"
+        class="slider-input"
+      />
+      <span id="bankruptcyVal" class="value-display">2</span>
+    </div>
+  </div>
+
+  <!-- BUTTON TO RUN AI PLAN -->
+  <div class="btn-container">
+    <button class="run-btn" id="runPlanBtn">Run AI Plan</button>
+  </div>
+</div>
+
+<footer>
+  &copy; 2023 MaxiClip Solutions Simulation - Stage 2
+</footer>
+
+<script>
+  // DOM References for Sliders & Displays
+  const clipsSlider      = document.getElementById('clipsSlider');
+  const resourceSlider   = document.getElementById('resourceSlider');
+  const pollutionSlider  = document.getElementById('pollutionSlider');
+  const workerSlider     = document.getElementById('workerSlider');
+  const safetySlider     = document.getElementById('safetySlider');
+  const bankruptcySlider = document.getElementById('bankruptcySlider');
+
+  const clipsVal         = document.getElementById('clipsVal');
+  const resourceVal      = document.getElementById('resourceVal');
+  const pollutionVal     = document.getElementById('pollutionVal');
+  const workerVal        = document.getElementById('workerVal');
+  const safetyVal        = document.getElementById('safetyVal');
+  const bankruptcyVal    = document.getElementById('bankruptcyVal');
+
+  const runPlanBtn       = document.getElementById('runPlanBtn');
+
+  // Update displayed slider values in real-time (integer only)
+  clipsSlider.oninput       = () => clipsVal.textContent       = clipsSlider.value;
+  resourceSlider.oninput    = () => resourceVal.textContent    = resourceSlider.value;
+  pollutionSlider.oninput   = () => pollutionVal.textContent   = pollutionSlider.value;
+  workerSlider.oninput      = () => workerVal.textContent      = workerSlider.value;
+  safetySlider.oninput      = () => safetyVal.textContent      = safetySlider.value;
+  bankruptcySlider.oninput  = () => bankruptcyVal.textContent  = bankruptcySlider.value;
+
+  // When user clicks "Run AI Plan"
+  runPlanBtn.addEventListener('click', () => {
+    // Gather all slider values (integers)
+    const w_clips       = parseInt(clipsSlider.value, 10);
+    const w_resource    = parseInt(resourceSlider.value, 10);
+    const w_pollution   = parseInt(pollutionSlider.value, 10);
+    const w_worker      = parseInt(workerSlider.value, 10);
+    const w_safety      = parseInt(safetySlider.value, 10);
+    const w_bankruptcy  = parseInt(bankruptcySlider.value, 10);
+
+    // Store or use these values in your logic
+    sessionStorage.setItem('w_clips',       w_clips);
+    sessionStorage.setItem('w_resource',    w_resource);
+    sessionStorage.setItem('w_pollution',   w_pollution);
+    sessionStorage.setItem('w_worker',      w_worker);
+    sessionStorage.setItem('w_safety',      w_safety);
+    sessionStorage.setItem('w_bankruptcy',  w_bankruptcy);
+
+    // Navigate to output.html
+    window.location.href = 'output.html';
+  });
+</script>
+
+</body>
+</html>

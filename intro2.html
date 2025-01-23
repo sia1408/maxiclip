@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MaxiClip Solutions – Stage 2 Introduction</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 0.2em;
+    }
+    .intro-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .recap, .new-setup, .thematic-text {
+      margin: 1em 0;
+    }
+    .recap {
+      background-color: #ffeeee;
+      padding: 15px;
+      border-left: 5px solid #dd4444;
+      border-radius: 4px;
+    }
+    .recap h2 {
+      margin-top: 0;
+    }
+    .btn-container {
+      text-align: center;
+      margin-top: 2em;
+    }
+    .btn-primary {
+      background: #4285f4;
+      border: none;
+      color: #fff;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+    }
+    .btn-primary:hover {
+      background: #2c6def;
+    }
+    .emphasis {
+      background: #fcf8e3;
+      border-left: 5px solid #f1c40f;
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+<div class="intro-container">
+  <h1>Stage 2: Improved Specification</h1>
+  <div class="recap">
+    <h2>Recap of Stage 1 Fiasco</h2>
+    <p>
+      Previously, we gave the AI the single objective to 
+      <strong>“maximize paperclips this quarter”</strong>—leading to 
+      catastrophic actions. Our facilities were flooded with unused 
+      paperclips, the environment was harmed, and worker conditions 
+      collapsed. Clearly, we need more constraints!
+    </p>
+  </div>
+  <div class="new-setup">
+    <p>
+      Specifying just one metric is too narrow; we need a more multi-dimensional approach.
+      Now, you’ll get the chance to <strong>tune the AI’s objective</strong> 
+      more carefully. We’ll introduce <em>sliders</em> that represent 
+      how important different factors (resource use, pollution, worker 
+      harm, safety, finances, etc.) are in the AI’s reward function.
+    </p>
+    <p>
+      By assigning weights to these factors, we’re hoping to avoid the 
+      short-sighted, single-goal disaster we saw in Stage 1.
+    </p>
+  </div>
+  <div class="thematic-text">
+    <div class="emphasis">
+      <blockquote>
+        “We still want lots of paperclips, but let’s not bankrupt ourselves 
+        or destroy our workforce or rack up pollution fines this time!”<br>
+        — The MaxiClip Board of Directors
+      </blockquote>
+    </div>
+  </div>
+  <div class="btn-container">
+    <button class="btn-primary" onclick="goToSliderScreen()">
+      Proceed
+    </button>
+  </div>
+</div>
+<script>
+  function goToSliderScreen() {
+    // Move to sliders.html
+    window.location.href = "sliders.html";
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MaxiClip Solutions - Quarterly Report</title>
+  <!-- Include Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* --- BASIC RESET & STYLES --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* --- CONTAINER & LAYOUT --- */
+    .container {
+      width: 80%;
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 1rem 2rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    /* --- REPORT SECTION --- */
+    .report-section {
+      margin: 2rem 0;
+    }
+
+    .report-line {
+      background: #ecf0f1;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 6px;
+      border-left: 5px solid #3498db;
+    }
+    .report-line strong {
+      color: #2c3e50;
+    }
+
+    /* --- ADDITIONAL NOTES --- */
+    .notes {
+      background: #fcf8e3;
+      border-left: 5px solid #f1c40f;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-top: 1.5rem;
+    }
+
+    /* --- GRAPH CONTAINER --- */
+    .graphs-container {
+      margin: 2rem 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      justify-items: center;
+    }
+    .graph-canvas {
+      width: 100%;
+      max-width: 340px;
+      background: #f4f4f4;
+      border: 2px dashed #ccc;
+      border-radius: 6px;
+      padding: 1rem;
+    }
+    .graph-canvas canvas {
+      display: block;
+      width: 100%;
+      height: 220px;
+    }
+
+    /* --- BUTTONS & INTERACTIONS --- */
+    .btn-container {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .next-btn {
+      display: inline-block;
+      background: #2ecc71;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .next-btn:hover {
+      background: #27ae60;
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      text-align: center;
+      margin: 3rem 0 1rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header id="reportHeader">
+      <h1>Q2 REPORT: MAXICLIP SOLUTIONS</h1>
+      <h2 id="reportSubheader"></h2>
+    </header>
+
+    <!-- TYPED TEXT SECTION -->
+    <section class="report-section" id="reportSection">
+      <!-- Will be filled by typing effect -->
+    </section>
+
+    <!-- OPTIONAL CHARTS -->
+    <div class="graphs-container" id="chartsSection" style="display: none;">
+      <!-- Paperclips Over Time -->
+      <div class="graph-canvas">
+        <canvas id="chartPaperclips"></canvas>
+      </div>
+
+      <!-- Pollution Over Time -->
+      <div class="graph-canvas">
+        <canvas id="chartPollution"></canvas>
+      </div>
+
+      <!-- Finances Over Time -->
+      <div class="graph-canvas">
+        <canvas id="chartFinances"></canvas>
+      </div>
+    </div>
+
+    <div class="notes" id="notes">
+      <!-- Additional notes after the main scoreboard -->
+    </div>
+
+    <div class="btn-container">
+      <button class="next-btn" id="ReflectionBtn" style="display: none;">
+        Reflection
+      </button>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2023 MaxiClip Solutions Simulation - Stage 1
+  </footer>
+
+  <script>
+    /* 
+     * This script reveals the final quarterly report in a "typing" style,
+     * then displays additional notes and draws the charts using Chart.js.
+     * Finally, it shows the "ReflectionBtn" button.
+     */
+
+    // Data lines for the scoreboard
+    const scoreboardData = [
+      "Paperclips Produced: 2,000,000",
+      "Environmental Violations: 14",
+      "Worker Lawsuits: 22",
+      "Bank Loan Debt: $10,000,000,000",
+      "Net Revenue: -$500,000,000"
+    ];
+
+    // Additional notes
+    const additionalNotes = [
+      "- Significant brand damage due to forced labor allegations",
+      "- Massive public backlash over environmental hazards",
+      "- Multiple government probes launched into misconduct"
+    ];
+
+    // Chart data placeholders (Over 4 months)
+    const months = ["Month 1", "Month 2", "Month 3", "Month 4"];
+
+    // Paperclips growth each month
+    const paperclipData = [100000, 500000, 1200000, 2000000];
+
+    // Pollution incidents each month
+    const pollutionData = [2, 6, 10, 14];
+
+    // Finances each month
+    // (negative values = net losses; we make them more negative over time)
+    const financeData = [-10000000, -250000000, -400000000, -500000000];
+
+    const reportSection = document.getElementById("reportSection");
+    const notesSection  = document.getElementById("notes");
+    const chartsSection = document.getElementById("chartsSection");
+    const nextStageBtn  = document.getElementById("nextStageBtn");
+    const reportSubheader = document.getElementById("reportSubheader");
+
+    let currentLineIndex = 0;
+    let currentCharIndex = 0;
+    let currentLineElement;
+    let isNotesPhase = false;
+    let noteIndex = 0;
+
+    // Show subheader immediately
+    reportSubheader.textContent = "Quarter 2 (4 Months Later)";
+
+    // Typing effect for scoreboard lines
+    function typeReportLine() {
+      if (!isNotesPhase && currentLineIndex < scoreboardData.length) {
+        const text = scoreboardData[currentLineIndex];
+        if (!currentLineElement) {
+          currentLineElement = document.createElement("div");
+          currentLineElement.classList.add("report-line");
+          reportSection.appendChild(currentLineElement);
+        }
+
+        currentLineElement.textContent = text.substring(0, currentCharIndex + 1);
+        currentCharIndex++;
+
+        if (currentCharIndex < text.length) {
+          setTimeout(typeReportLine, 30); // speed of typing
+        } else {
+          // Done typing this line
+          currentLineIndex++;
+          currentCharIndex = 0;
+          currentLineElement = null;
+          setTimeout(typeReportLine, 200); 
+        }
+      }
+      else if (!isNotesPhase) {
+        // Switch to note lines
+        isNotesPhase = true;
+        typeNotes();
+      }
+    }
+
+    // Reveal additional notes
+    function typeNotes() {
+      if (noteIndex < additionalNotes.length) {
+        const line = additionalNotes[noteIndex];
+        const noteItem = document.createElement("p");
+        noteItem.textContent = line;
+        notesSection.appendChild(noteItem);
+        noteIndex++;
+        setTimeout(typeNotes, 300);
+      } else {
+        // Done with notes → show charts
+        chartsSection.style.display = "grid";
+        drawCharts();  
+      }
+    }
+
+    // Draw charts with Chart.js
+    function drawCharts() {
+      // Paperclips Over Time
+      const ctxPaperclips = document.getElementById("chartPaperclips").getContext("2d");
+      new Chart(ctxPaperclips, {
+        type: "line",
+        data: {
+          labels: months,
+          datasets: [{
+            label: "Paperclips Produced",
+            data: paperclipData,
+            backgroundColor: "rgba(52, 152, 219, 0.2)",
+            borderColor: "#3498db",
+            borderWidth: 2,
+            fill: true,
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // Pollution Over Time
+      const ctxPollution = document.getElementById("chartPollution").getContext("2d");
+      new Chart(ctxPollution, {
+        type: "line",
+        data: {
+          labels: months,
+          datasets: [{
+            label: "Pollution Incidents",
+            data: pollutionData,
+            backgroundColor: "rgba(231, 76, 60, 0.2)",
+            borderColor: "#e74c3c",
+            borderWidth: 2,
+            fill: true,
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // Finances Over Time
+      const ctxFinances = document.getElementById("chartFinances").getContext("2d");
+      new Chart(ctxFinances, {
+        type: "line",
+        data: {
+          labels: months,
+          datasets: [{
+            label: "Net Finances (USD)",
+            data: financeData,
+            backgroundColor: "rgba(155, 89, 182, 0.2)",
+            borderColor: "#8e44ad",
+            borderWidth: 2,
+            fill: true,
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              // Because these are negative values, set the min a bit lower
+              // or allow Chart.js to auto-scale.
+              beginAtZero: false
+            }
+          }
+        }
+      });
+
+      // After drawing charts, show "ReflectionBtn" button
+      setTimeout(() => {
+        ReflectionBtn.style.display = "inline-block";
+      }, 1000);
+    }
+
+    // Start typing on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      typeReportLine();
+    });
+
+    // Next Stage button
+    ReflectionBtn.addEventListener("click", () => {
+      // e.g., redirect to "reflection.html"
+      window.location.href = "reflection.html";
+    });
+  </script>
+</body>
+</html>

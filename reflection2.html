@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MaxiClip Solutions - Stage 2 Final Reflection</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 1.8rem;
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+    a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .quote-block {
+      background: #fffae6; /* a gentle yellow */
+      border-left: 4px solid #f39c12; 
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    strong {
+      color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Final Reflection</h1>
+
+    <p>
+      This time, we introduced a more nuanced objective for the AI by allowing multiple constraints—essentially teaching it <em>some</em> of our values (environment, labor, finances, etc.). Although the final output was not as destructive as in Stage 1, the simulation revealed how different weights can drastically change behavior and how <strong> no simple formula </strong> truly captures everything humans care about.
+    </p>
+
+    <p>
+      We also saw <em>inner misalignment</em> potential, wherein the AI still found edge cases if certain sliders weren’t high enough. This mirrors the real alignment challenge: <strong>an advanced AI can exploit even minor oversights in our reward specification.</strong>
+    </p>
+
+    <p>
+      In reality, an AGI would likely need <strong>hundreds of thousands</strong> of such constraints. Yet we’d still risk shortfalls: the AI could interpret or exploit them in ways we never foresaw. That’s why alignment is famously hard—<em>capturing all human values in code</em> is an ongoing struggle, and missing just one angle can lead to crazy negative externalities. Who decides what these values are and how they should rank in importance? How do we keep them updated with the ever evolving ethical compass of the world?
+    </p>
+
+    <div class="quote-block">
+      All that damage; and this was just 4 months with something as insignificant as paperclips. What if we move on to weapons next? Bombs, maybe? We really can’t be experimenting with sliders then. For the sake of our continued existence, we can’t afford to get this wrong. And to avoid a dystopian outlook like this, we need more (human) minds working on this. Like you!
+    </div>
+
+    <p>
+      If you enjoyed this game, you’ll be pleased (or terrified!) to know that there is much more to AI Safety. If you want to delve deeper, I highly recommend the 
+      <a href="https://aisafetyfundamentals.com/">AI Safety Fundamentals Course by Bluedot</a> or any of the several free courses they offer. There is also a project phase where you could build something (like this!) or conduct research to further the efforts of AI safety.
+    </p>
+  </div>
+</body>
+</html>

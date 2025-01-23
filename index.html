@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MaxiClip Solutions - Stage 1: Narrative Setup</title>
+  <style>
+    /* --- BASIC RESET & STYLES --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* --- CONTAINER & LAYOUT --- */
+    .container {
+      width: 80%;
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      color: #555;
+    }
+
+    /* --- STORY SECTION --- */
+    .story {
+      margin: 2rem 0;
+      line-height: 1.8;
+    }
+    .story p {
+      margin-bottom: 1rem;
+    }
+
+    /* --- BUTTONS & INTERACTIONS --- */
+    .btn-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .proceed-btn {
+      display: inline-block;
+      background: #3498db;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .proceed-btn:hover {
+      background: #2980b9;
+    }
+
+    /* --- OPTIONAL FOOTER STYLES --- */
+    footer {
+      text-align: center;
+      margin: 2rem 0 1rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- HEADER / TITLE -->
+    <header>
+      <h1>MaxiClip Solutions</h1>
+    </header>
+
+    <!-- NARRATIVE SETUP -->
+    <section class="story">
+      <p>
+        Welcome to <strong>MaxiClip Solutions</strong>, the world’s leading paperclip manufacturer.
+        We have just completed our most ambitious project yet:
+        an extremely powerful AI system—<em>an AGI</em>—designed to analyze any problem and
+        deliver revolutionary solutions. 
+      </p>
+      <p>
+        Our simple instruction to this AGI? 
+        <strong>“Maximize paperclip production this quarter.”</strong> 
+        That’s it. No extra constraints, no disclaimers. But why would we need any of that?
+        After all, we only care about our pockets, and to have deep pockets, we need to make more paperclips.
+        Let’s see how it responds when given a single-minded goal without any
+        oversight or moral guidance.
+      </p>
+      <p>
+        In this simulation, you’ll witness the AGI’s plan unfold in real time. 
+        When it’s finished, we’ll review the results of its unbounded
+        approach—and uncover the <em>pitfalls</em> of specifying a goal 
+        without including broader human values or safety measures.
+      </p>
+      <p>
+        Ready to proceed? Let’s give the AI control and see how it attempts 
+        to <strong>“optimize”</strong> paperclip production, 
+        no matter the cost...
+      </p>
+    </section>
+
+    <!-- BUTTON TO PROCEED TO THE ACTUAL SIMULATION -->
+    <div class="btn-container">
+      <button class="proceed-btn" id="proceedBtn">
+        Run the AI’s Plan
+      </button>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; 2023 MaxiClip Solutions Simulation - Stage 1
+  </footer>
+
+  <script>
+    // --- JAVASCRIPT FOR INTERACTIONS / NAVIGATION ---
+    const proceedBtn = document.getElementById('proceedBtn');
+
+    proceedBtn.addEventListener('click', function() {
+      window.location.href = 'agiPlan.html';
+    });
+  </script>
+
+</body>
+</html>

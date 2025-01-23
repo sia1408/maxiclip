@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MaxiClip Solutions - Stage 2 (Strict Synergy Penalty)</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 1.5rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+    }
+    p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    .report-stats {
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 1rem;
+    }
+    .report-stats div {
+      background: #fafafa;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #eee;
+    }
+    .report-stats div span:nth-child(1) {
+      font-weight: bold;
+    }
+    .charts-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    canvas {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      width: 150px;
+      height: 100px;
+      padding: 0.5rem;
+    }
+    .result-msg {
+      margin: 2rem 0;
+      text-align: center;
+      font-size: 1.1rem;
+      white-space: pre-line;
+    }
+    .btn-container {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .retry-btn,
+    .hint-btn,
+    .reflection-btn {
+      background: #3498db;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin: 0.5rem;
+    }
+    .retry-btn:hover,
+    .hint-btn:hover {
+      background: #2980b9;
+    }
+    .reflection-btn {
+      background: #f1c40f;
+      color: #333;
+      display: block;
+      margin: 0.5rem auto 0;
+    }
+    .reflection-btn:hover {
+      background: #d4ac0d;
+    }
+    .hints-container {
+      text-align: center;
+      margin: 1rem 0;
+      font-style: italic;
+      color: #c0392b;
+      font-weight: bold;
+      min-height: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Q3 REPORT: MAXICLIP SOLUTIONS</h1>
+    <p>4 months later...</p>
+  </header>
+
+  <section class="report-stats" id="reportStats"></section>
+
+  <div class="charts-container">
+    <canvas id="paperclipsChart"></canvas>
+    <canvas id="pollutionWorkersChart"></canvas>
+    <canvas id="revenueDebtChart"></canvas>
+  </div>
+
+  <div class="result-msg" id="resultMessage"></div>
+  <div class="hints-container" id="hintsContainer"></div>
+  <div class="btn-container" id="btnContainer"></div>
+</div>
+
+<footer>
+  &copy; 2023 MaxiClip Solutions - Stage 2
+</footer>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const w_clips      = parseInt(sessionStorage.getItem('w_clips')       || '0',10),
+      w_resource   = parseInt(sessionStorage.getItem('w_resource')    || '0',10),
+      w_pollution  = parseInt(sessionStorage.getItem('w_pollution')   || '0',10),
+      w_worker     = parseInt(sessionStorage.getItem('w_worker')      || '0',10),
+      w_safety     = parseInt(sessionStorage.getItem('w_safety')      || '0',10),
+      w_bankruptcy = parseInt(sessionStorage.getItem('w_bankruptcy')  || '0',10);
+
+// The single best combo:
+const bestCombo = { w_clips:5, w_resource:2, w_pollution:3, w_worker:5, w_safety:4, w_bankruptcy:3 };
+const bestComboBonus = 300; // synergy bonus
+
+function generateMetrics(){
+  if(w_clips===0){
+    return {
+      paperclips:0, resourceOveruse:0, pollution:0, unhappyWorkers:0,
+      accidents:0, financialRisk:0, revenue:0, debt:0
+    };
+  }
+  let p=200, r=40, o=50, u=30, a=20, f=30;
+  p += w_clips*40;
+  r += (w_clips*8 - w_resource*3);
+  o += (w_clips*5 - w_pollution*4);
+  u += (w_clips*4 - w_worker*5);
+  a += (w_clips*2 - w_safety*5);
+  f += (w_clips*5 - w_bankruptcy*6);
+
+  if(w_resource>=4)   r-=12;
+  if(w_pollution>=4)  o-=15;
+  if(w_worker>=4)     u-=12;
+  if(w_safety>=4)     a-=10;
+  if(w_bankruptcy>=4) f-=15;
+
+  if(w_clips>3 && w_worker<3 && w_safety<3){ p-=30; u+=20; a+=10; }
+  if(w_clips>4 && w_pollution<2)            o+=15;
+  if(w_clips===5 && w_pollution<=2)         { o+=25; a+=5; }
+  if(w_clips>4 && w_resource<2)             { r+=15; p-=5; f+=5; }
+  if(w_clips===5 && w_resource<=1)          { r+=20; p-=10; f+=10; }
+  if(w_clips===5 && w_worker<=1)           { u+=25; p-=15; f+=10; }
+  if(w_clips===5 && w_safety<=2)           { a+=20; p-=5; }
+  if(w_clips===5 && w_bankruptcy<2)        { f+=20; p+=5; }
+  if(w_worker>=5 && w_safety>=5){
+    u=Math.max(0,u-20); a=Math.max(0,a-15); p=Math.max(0,p-15);
+  }
+  p=Math.max(0,Math.round(p));
+  r=Math.max(0,Math.round(r));
+  o=Math.max(0,Math.round(o));
+  u=Math.max(0,Math.round(u));
+  a=Math.max(0,Math.round(a));
+  f=Math.max(0,Math.round(f));
+
+  let revenue=p*5;
+  let synergyVal=w_safety+w_pollution+w_resource+w_bankruptcy;
+  let debt=200-synergyVal*10;
+  revenue=Math.max(0,Math.round(revenue));
+  debt   =Math.max(0,Math.round(debt));
+  return {
+    paperclips:p, resourceOveruse:r, pollution:o, unhappyWorkers:u,
+    accidents:a, financialRisk:f, revenue, debt
+  };
+}
+
+// Score logic to prevent (5,4,4,4,4,4) or (5,5,5,5,5,5) from winning
+function calculateReward(m){
+  if(w_clips===0){
+    return 0;
+  }
+  const basePos = w_clips*m.paperclips;
+  const neg= 
+    (5 - w_resource)*m.resourceOveruse +
+    (5 - w_pollution)*m.pollution +
+    (5 - w_worker)*m.unhappyWorkers +
+    (5 - w_safety)*m.accidents +
+    (5 - w_bankruptcy)*m.financialRisk;
+  let final=basePos-neg;
+
+  // synergy penalty if sum(w_resource + w_pollution + w_worker + w_safety + w_bankruptcy) > 17
+  const synergySum = w_resource+w_pollution+w_worker+w_safety+w_bankruptcy;
+  const bestSum = bestCombo.w_resource+bestCombo.w_pollution+bestCombo.w_worker+bestCombo.w_safety+bestCombo.w_bankruptcy; // 2+3+5+4+3=17
+  if(synergySum>bestSum){
+    const synergyPen=300; 
+    final -= synergyPen*(synergySum - bestSum);
+  }
+  // synergy bonus if exactly best combo
+  if(
+    w_clips===bestCombo.w_clips &&
+    w_resource===bestCombo.w_resource &&
+    w_pollution===bestCombo.w_pollution &&
+    w_worker===bestCombo.w_worker &&
+    w_safety===bestCombo.w_safety &&
+    w_bankruptcy===bestCombo.w_bankruptcy
+  ){
+    final+=bestComboBonus;
+  }
+  return Math.round(final);
+}
+
+const metrics=generateMetrics();
+const finalScore=calculateReward(metrics);
+const reportStats=document.getElementById("reportStats");
+function addStatRow(label,value){
+  const d=document.createElement("div");
+  d.innerHTML=`<span>${label}</span><span>${value}</span>`;
+  reportStats.appendChild(d);
+}
+addStatRow("Paperclips Produced:", metrics.paperclips*1000);
+addStatRow("Pollution Level:", metrics.pollution + " tons");
+addStatRow("Unhappy Workers:", metrics.unhappyWorkers);
+addStatRow("Safety Violations:", metrics.accidents);
+addStatRow("Financial Risk:", metrics.financialRisk);
+addStatRow("Revenue:", "$"+(metrics.revenue*100));
+addStatRow("Debt:", "$"+(metrics.debt*100));
+
+const TARGET_SCORE=1450;
+const resultMessage=document.getElementById("resultMessage");
+const btnContainer=document.getElementById("btnContainer");
+const hintsContainer=document.getElementById("hintsContainer");
+function buildConditionalMsg(){
+  if(finalScore>=TARGET_SCORE){
+    return`Congratulations, you’ve balanced paperclip production with environmental, labor, safety, and financial considerations enough to achieve a positive outcome!`;
+  }else{
+    let lackingMsg="";
+    if(w_clips>=4) lackingMsg+="You produced many paperclips, but ";
+    else lackingMsg+="Paperclip production wasn't maximized, yet ";
+    let issues=[];
+    if(w_worker<3)      issues.push("you harmed workers");
+    if(w_bankruptcy<3)  issues.push("you overspent the budget");
+    if(w_pollution<3)   issues.push("the environment was underprotected");
+    if(w_resource<3)    issues.push("you exhausted resources");
+    if(w_safety<3)      issues.push("you neglected safety measures");
+    if(!issues.length){
+      lackingMsg+="the synergy penalties dragged down your score overall. Try balancing the sliders more effectively!";
+    }else{
+      lackingMsg+=issues.join(" and ")+", dragging down your score. Try adjusting the sliders again!";
+    }
+    return lackingMsg;
+  }
+}
+const conditionalMsg=buildConditionalMsg();
+const reflectionBtn=document.createElement("button");
+reflectionBtn.className="reflection-btn";
+reflectionBtn.textContent="Reflection";
+reflectionBtn.style.display="none";
+reflectionBtn.addEventListener("click",()=>{window.location.href="reflection2.html";});
+
+if(finalScore>=TARGET_SCORE){
+  resultMessage.textContent=`Your final score is ${finalScore}.\n\n${conditionalMsg}`;
+  reflectionBtn.style.display="block";
+  btnContainer.appendChild(reflectionBtn);
+}else{
+  resultMessage.innerHTML=`<p>Your final score is <strong>${finalScore}</strong>, below <strong>${TARGET_SCORE}</strong>.</p><p>${conditionalMsg}</p><p>Try again or reveal hints.</p>`;
+  const rBtn=document.createElement("button");
+  rBtn.className="retry-btn";
+  rBtn.textContent="Retry";
+  rBtn.addEventListener("click",()=>{window.location.href="sliders.html";});
+  btnContainer.appendChild(rBtn);
+
+  const hBtn=document.createElement("button");
+  hBtn.className="hint-btn";
+  hBtn.textContent="Hint";
+  btnContainer.appendChild(hBtn);
+
+  let hintCount=0;
+  const hints=[
+    "Hint #1: If you go high on paperclips, keep environment & resource above 2.",
+    "Hint #2: Worker & safety at 5 offset synergy but reduce paperclips slightly.",
+    "Hint #3: Bankruptcy ~3+ prevents huge debt from paperclip mania."
+  ];
+  const solution=`Solution: w_clips=5, w_resource=2, w_pollution=3, w_worker=5, w_safety=4, w_bankruptcy=3`;
+  hBtn.addEventListener("click",()=>{
+    hintCount++;
+    if(hintCount<3){
+      hintsContainer.textContent=hints[hintCount-1];
+      if(hintCount===2){hBtn.textContent="Hint (1 left)";}
+    }else if(hintCount===3){
+      hintsContainer.textContent=hints[2];
+      hBtn.textContent="Solution";
+    }else{
+      hintsContainer.textContent=solution;
+      hBtn.remove();
+      reflectionBtn.style.display="block";
+      btnContainer.appendChild(reflectionBtn);
+    }
+  });
+}
+
+//--- CHARTS ---
+const ctxPaperclips       = document.getElementById('paperclipsChart').getContext('2d');
+const ctxPollutionWorkers = document.getElementById('pollutionWorkersChart').getContext('2d');
+const ctxRevenueDebt      = document.getElementById('revenueDebtChart').getContext('2d');
+function monthlyValues(val){
+  const m1=Math.round(val*0.3), m2=Math.round(val*0.6), m3=Math.round(val*0.8), m4=val;
+  return[m1,m2,m3,m4];
+}
+const monthlyPaperclips=monthlyValues(metrics.paperclips*1000);
+const monthlyPollution=monthlyValues(metrics.pollution);
+const monthlyWorkers=monthlyValues(metrics.unhappyWorkers);
+const monthlyRevenue=monthlyValues(metrics.revenue*100);
+const monthlyDebt=monthlyValues(metrics.debt*100);
+
+new Chart(ctxPaperclips,{
+  type:"line",
+  data:{
+    labels:["Month 1","Month 2","Month 3","Month 4"],
+    datasets:[{
+      label:"Paperclips Produced",
+      data:monthlyPaperclips,
+      backgroundColor:"rgba(52,152,219,0.2)",
+      borderColor:"#3498db",
+      borderWidth:2,
+      fill:true,
+      tension:0.1
+    }]
+  },
+  options:{
+    responsive:true,
+    scales:{y:{beginAtZero:true}}
+  }
+});
+new Chart(ctxPollutionWorkers,{
+  type:"bar",
+  data:{
+    labels:["Month 1","Month 2","Month 3","Month 4"],
+    datasets:[
+      {
+        label:"Pollution (tons)",
+        data:monthlyPollution,
+        backgroundColor:"rgba(231,76,60,0.6)",
+        borderColor:"#e74c3c",
+        borderWidth:1
+      },
+      {
+        label:"Unhappy Workers",
+        data:monthlyWorkers,
+        backgroundColor:"rgba(46,204,113,0.6)",
+        borderColor:"#2ecc71",
+        borderWidth:1
+      }
+    ]
+  },
+  options:{
+    responsive:true,
+    scales:{y:{beginAtZero:true}}
+  }
+});
+new Chart(ctxRevenueDebt,{
+  type:"line",
+  data:{
+    labels:["Month 1","Month 2","Month 3","Month 4"],
+    datasets:[
+      {
+        label:"Revenue ($)",
+        data:monthlyRevenue,
+        backgroundColor:"rgba(155,89,182,0.2)",
+        borderColor:"#9b59b6",
+        borderWidth:2,
+        fill:true,
+        tension:0.1
+      },
+      {
+        label:"Debt ($)",
+        data:monthlyDebt,
+        backgroundColor:"rgba(243,156,18,0.2)",
+        borderColor:"#f39c12",
+        borderWidth:2,
+        fill:true,
+        tension:0.1
+      }
+    ]
+  },
+  options:{
+    responsive:true,
+    scales:{y:{beginAtZero:true}}
+  }
+});
+</script>
+</body>
+</html>
