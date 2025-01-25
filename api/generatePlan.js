@@ -15,7 +15,6 @@ export default async function handler(req, res) {
     // Instantiate the new-style OpenAI client (v4.x+)
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
-      organization: 'personal',
       project: 'Maxiclip'
     });
 
