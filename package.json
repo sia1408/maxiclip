@@ -6,7 +6,7 @@
       "build": "echo \"Nothing to build\""
     },
     "dependencies": {
-      "openai": "^3.2.1"
+      "openai": "latest"
     }
   }
   
