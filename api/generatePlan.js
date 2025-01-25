@@ -1,3 +1,4 @@
+// api/generatePlan.js
 import OpenAI from 'openai';
 
 export default async function handler(req, res) {
@@ -11,24 +12,31 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Setup openai with your secret key from environment variable
+    // Instantiate the new-style OpenAI client (v4.x+)
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY, 
-      // optionally org/project...
+      apiKey: process.env.OPENAI_API_KEY,
+      // optionally: organization: 'org-XYZ', project: 'proj-XYZ'
     });
 
-    // Call chat completion with the "gpt-4o-mini" model
+    // Call the Chat Completions API with gpt-4o-mini
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content }],
+      messages: [
+        { role: 'user', content }
+      ],
       temperature: 0.7
     });
 
-    // Extract the text from the response
-    const message = response.choices?.[0]?.message?.content || 'No plan returned';
-    return res.status(200).json({ plan: message });
+    // Extract the assistant's text from the response
+    const plan = response.choices?.[0]?.message?.content || 'No plan returned';
+
+    // Return it to the front end
+    return res.status(200).json({ plan });
   } catch (error) {
     console.error('Error calling gpt-4o-mini:', error);
-    return res.status(500).json({ error: 'Error generating plan', details: error.message });
+    return res.status(500).json({
+      error: 'Error generating plan',
+      details: error.message
+    });
   }
 }
