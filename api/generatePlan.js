@@ -15,7 +15,8 @@ export default async function handler(req, res) {
     // Instantiate the new-style OpenAI client (v4.x+)
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
-      // optionally: organization: 'org-XYZ', project: 'proj-XYZ'
+      organization: 'personal',
+      project: 'Maxiclip'
     });
 
     // Call the Chat Completions API with gpt-4o-mini
