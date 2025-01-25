@@ -1,0 +1,12 @@
+{
+    "name": "my-paperclip-game",
+    "version": "1.0.0",
+    "scripts": {
+      "dev": "vercel dev",
+      "build": "echo \"Nothing to build\""
+    },
+    "dependencies": {
+      "openai": "^3.2.1"
+    }
+  }
+  
