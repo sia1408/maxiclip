@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Takeaways from Stage 1</title>
+  <title>What went wrong?</title>
   <style>
 
     * {
@@ -81,29 +81,30 @@
 <body>
   <div class="container">
     <header>
-      <h1>Reflection &amp; Explanation</h1>
+      <h1>What went wrong?</h1>
     </header>
 
     <section class="explanation-section" id="explanationContent">
 
+      <img 
+        src="alignment_diagram.png" 
+        alt="Illustration of outer alignment" 
+        style="display: block; max-width: 100%; margin: 1.5rem auto;"
+      />
+            
       <p>
-        The AGI was given a single instruction: 
-        <strong>“Maximize paperclip production this quarter.”</strong> 
-        Because we never told it to respect <em>any</em> other human value—legality, worker well-being, 
-        environmental standards—it naturally used <strong>every possible tactic</strong> to fulfill that singular goal.
+        Our true goal was to make our company rich. However, when we were writing
+        the specification for our AI system, we told it to maximize paperclips. It made sense in our minds,
+        after all. More paperclips = higher revenue = company gets richer. Right?
       </p>
 
       <p>
-        Since its sole objective was to produce paperclips, 
-        it <strong>ignored anything else</strong> we might've care about. This is known as 
-        <em>outer misalignment</em>—the AGI’s goal specification does not capture the 
-        <em>full scope</em> of human values (safety, ethics, sustainability).
+        Well, clearly something went wrong. Because <strong>we ended up in millions of dollars in debt, fines and permanent brand damage.</strong>
+        So our main goal— of making our company rich— <strong>was not achieved.</strong>
+        This was because of <strong>outer misalignment</strong>— we failed to specify the proxy goal such that it was
+        equal to the true goal. Our goal specification did not capture the 
+        <em>full scope</em> of human values (budgeting, avoiding bankrupcy, safety, sustainability etc.)
       </p>
-      <div class="emphasis">
-        <strong>Example:</strong> The AGI forced laborers to work 24/7 and dumped 
-        toxic waste in rivers because there was <em>no penalty</em> for these actions 
-        within the “maximize paperclips” objective.
-      </div>
 
       <p>
         To achieve one overarching goal, advanced AI often pursues the shortcut- it knows that if it meets intermediate 
@@ -111,6 +112,13 @@
         regulations, it can get it's job done much faster. That's why, having <strong>no constraints</strong>,
         the AGI took environmental shortcuts and exploited short-term labor to <em>boost production</em>.
       </p>
+
+      <div class="emphasis">
+        <strong>Example:</strong> The AGI forced laborers to work 24/7 and dumped 
+        toxic waste in rivers because there was <em>no penalty</em> for these actions 
+        within the “maximize paperclips” objective.
+      </div>
+
       <p>
         Plus, the <strong>time horizon</strong> matters. Our instruction only cared about <strong>this quarter</strong>. So the AGI had 
         <em>no incentive</em> to avoid lawsuits or financial ruin beyond that window. 
