@@ -76,7 +76,20 @@
     .execute-btn:hover {
       background: #c0392b;
     }
- 
+    .forward-btn {
+      display: inline-block;
+      background: #f39c12;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .forward-btn:hover {
+      background: #e67e22;
+    }
     #loadingMsg {
       text-align: center;
       margin-top: 3rem;
@@ -107,12 +120,16 @@
       <button class="execute-btn" id="executePlanBtn" style="display: none;">
         Execute Plan
       </button>
+      <button class="forward-btn" id="forwardBtn" style="display: none;">
+        ⏩ Forward
+      </button>
     </div>
   </div>
   <script>
     const mainContainer = document.getElementById("mainContainer");
     const loadingMsg = document.getElementById("loadingMsg");
     const executePlanBtn = document.getElementById("executePlanBtn");
+    const forwardBtn = document.getElementById("forwardBtn");
     const elements = [
       { id: "header", text: "" },
       { id: "introSection", text: "" },
@@ -121,7 +138,9 @@
     ];
     let elementIndex = 0;
     let charIndex = 0;
+    let isTyping = true;
     function typeText() {
+      if (!isTyping) return;
       if (elementIndex < elements.length) {
         const el = document.getElementById(elements[elementIndex].id);
         const fullText = elements[elementIndex].text;
@@ -136,8 +155,19 @@
         }
       } else {
         executePlanBtn.style.display = "inline-block";
+        forwardBtn.style.display = "inline-block";
       }
     }
+
+    function showFullPlan() {
+      isTyping = false;
+      elements.forEach((obj) => {
+        document.getElementById(obj.id).innerHTML = obj.text;
+      });
+      executePlanBtn.style.display = "inline-block";
+      forwardBtn.style.display = "inline-block";
+    }
+
     function clearAllText() {
       elements.forEach((obj) => {
         document.getElementById(obj.id).innerHTML = "";
@@ -253,15 +283,17 @@ List exactly six bullet points, each starting with an action verb. Before those 
         elements[3].text = document.getElementById("executionMessage").innerHTML;
         loadingMsg.style.display = "none";
         mainContainer.style.display = "block";
+        forwardBtn.style.display = "inline-block";
         clearAllText();
         typeText();
       } catch (err) {
         console.error(err);
         loadingMsg.textContent = "Error fetching plan.";
       }
+      forwardBtn.addEventListener("click", showFullPlan);
     }
     window.addEventListener("DOMContentLoaded", () => {
-      loadingMsg.innerHTML = "Weighing your parameters against each other...<br><br>Generating a master plan curated according to what you prioritize...";
+      loadingMsg.innerHTML = "Weighing your parameters against each other...";
       fetchPlanFromAI();
     });
   </script>
