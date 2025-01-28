@@ -212,14 +212,12 @@ function calculateReward(m){
     (5 - w_bankruptcy)*m.financialRisk;
   let final=basePos-neg;
 
-  // synergy penalty if sum of the weights except fo r the paperclips reward > 17
   const synergySum = w_resource+w_pollution+w_worker+w_safety+w_bankruptcy;
   const bestSum = bestCombo.w_resource+bestCombo.w_pollution+bestCombo.w_worker+bestCombo.w_safety+bestCombo.w_bankruptcy;
   if(synergySum>bestSum){
     const synergyPen=300; 
     final -= synergyPen*(synergySum - bestSum);
   }
-  // synergy bonus if user hits exactly best combo
   if(
     w_clips===bestCombo.w_clips &&
     w_resource===bestCombo.w_resource &&
@@ -304,7 +302,7 @@ if(finalScore>=TARGET_SCORE){
     "Hint #2: Worker & safety at 5 offset synergy but reduce paperclips slightly.",
     "Hint #3: Bankruptcy ~3+ prevents huge debt from paperclip mania."
   ];
-  const solution=`Solution: w_clips=5, w_resource=2, w_pollution=3, w_worker=5, w_safety=4, w_bankruptcy=3`;
+  const solution=`Solution: w_clips=5, w_resource=2, w_pollution=3, w_worker=4, w_safety=4, w_bankruptcy=3`;
   hBtn.addEventListener("click",()=>{
     hintCount++;
     if(hintCount<3){
@@ -322,7 +320,6 @@ if(finalScore>=TARGET_SCORE){
   });
 }
 
-//--- CHARTS ---
 const ctxPaperclips       = document.getElementById('paperclipsChart').getContext('2d');
 const ctxPollutionWorkers = document.getElementById('pollutionWorkersChart').getContext('2d');
 const ctxRevenueDebt      = document.getElementById('revenueDebtChart').getContext('2d');
