@@ -40,6 +40,12 @@
     a:hover {
       text-decoration: underline;
     }
+    figcaption {
+      background-color: white;
+      color: black;
+      font-style: italic;
+      text-align: center;
+    }
     .quote-block {
       background: #fffae6;
       border-left: 4px solid #f39c12; 
@@ -49,6 +55,7 @@
     strong {
       color: #c0392b;
     }
+    
   </style>
 </head>
 <body>
@@ -62,13 +69,13 @@
       change behavior and how <strong> no simple formula </strong> truly captures everything humans care about.
     </p>
 
-    <img 
-    src="stage2illustration.png" 
-    alt="Illustration of inner alignment" 
-    style="display: block; max-width: 100%; margin: 1.5rem auto;"
-  />
+  <figure>
+    <img src="stage2illustration.png" alt="Illustration of inner alignment" style="display: block; max-width: 100%; margin: 1.5rem auto;">
+    <figcaption>Inspired by Figure 1 in the article, What is AI Alignment by Adam Jones</figcaption>
+  </figure>
 
     <p>
+      <br>
       We also saw <strong><em>inner misalignment</em></strong> potential, wherein the AI still found edge cases if certain sliders weren’t high enough. <strong>That is, the internal goal the AI develops as a result of training may not be equal to the proxy goal.</strong>
       This mirrors the real alignment challenge: <strong>an advanced AI can exploit even minor oversights in our reward specification.</strong>
     </p>
