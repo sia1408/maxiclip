@@ -128,7 +128,7 @@
   <div class="charts-container">
     <canvas id="paperclipsChart"></canvas>
     <canvas id="pollutionWorkersChart"></canvas>
-    <canvas id="revenueDebtChart"></canvas>
+    <canvas id="revenueDebtChart" width="150" height="150"></canvas>
   </div>
 
   <div class="result-msg" id="resultMessage"></div>
@@ -385,7 +385,7 @@ new Chart(ctxRevenueDebt, {
     datasets: [
       {
         label: "Revenue vs Debt",
-        data: [metrics.revenue * 50, metrics.debt * 50],
+        data: [metrics.revenue * 100, metrics.debt * 100],
         backgroundColor: ["#3498db", "#e74c3c"],
         borderColor: ["#2980b9", "#c0392b"],
         borderWidth: 1,
@@ -394,6 +394,8 @@ new Chart(ctxRevenueDebt, {
   },
   options: {
     responsive: true,
+    maintainAspectRatio: true,
+    aspectRatio: 2,
     plugins: {
       legend: {
         position: "top",
