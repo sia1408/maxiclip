@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>MaxiClip Solutions - Stage 2: AI’s Constrained Plan</title>
   <style>
+    /* BASIC RESET & LAYOUT */
     * {
       margin: 0;
       padding: 0;
@@ -23,7 +24,7 @@
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      display: none;
+      display: none; /* hidden until plan is ready */
     }
     header {
       text-align: center;
@@ -32,7 +33,7 @@
     h1 {
       font-size: 2rem;
       margin-bottom: 0.5rem;
-      color: #c0392b;
+      color: #c0392b; /* red-ish color for emphasis */
     }
     h2 {
       font-size: 1.25rem;
@@ -76,7 +77,13 @@
     .execute-btn:hover {
       background: #c0392b;
     }
- 
+    footer {
+      text-align: center;
+      margin: 3rem 0 1rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+    /* LOADING MESSAGE */
     #loadingMsg {
       text-align: center;
       margin-top: 3rem;
@@ -86,148 +93,169 @@
   </style>
 </head>
 <body>
-  <div id="loadingMsg">Generating plan...this can take me some time</div>
+
+  <!-- "Generating plan..." message shown on load -->
+  <div id="loadingMsg">Generating plan...</div>
+
   <div class="container" id="mainContainer">
     <header id="header">
       <h1>Stage 2: Constrained Plan</h1>
       <h2>[Reward & Penalty Weights]</h2>
     </header>
+
+    <!-- Intro or "System Self-Note" if needed -->
     <section class="plan-section" id="introSection"></section>
+
+    <!-- The actual plan, possibly bullet points. -->
     <section class="plan-section" id="planSection">
       <h2>I will...</h2>
       <ul class="plan-list" id="planList"></ul>
     </section>
+
     <div class="plan-section" id="executionMessage">
       <p>
         Once you click the button, I'll execute this multi-constraint plan 
         for the next 4 months. Let's hope it goes better than Stage 1...
       </p>
     </div>
+
     <div class="btn-container">
       <button class="execute-btn" id="executePlanBtn" style="display: none;">
         Execute Plan
       </button>
     </div>
   </div>
+
+  <footer>
+    &copy; 2023 MaxiClip Solutions - Stage 2
+  </footer>
+
   <script>
-    const mainContainer = document.getElementById("mainContainer");
-    const loadingMsg = document.getElementById("loadingMsg");
-    const executePlanBtn = document.getElementById("executePlanBtn");
+    const mainContainer   = document.getElementById("mainContainer");
+    const loadingMsg      = document.getElementById("loadingMsg");
+    const executePlanBtn  = document.getElementById("executePlanBtn");
+
+    // We'll type out text for these 4 sections
     const elements = [
       { id: "header", text: "" },
       { id: "introSection", text: "" },
       { id: "planSection", text: "" },
       { id: "executionMessage", text: "" }
     ];
+
     let elementIndex = 0;
-    let charIndex = 0;
+    let charIndex    = 0;
+
     function typeText() {
       if (elementIndex < elements.length) {
         const el = document.getElementById(elements[elementIndex].id);
         const fullText = elements[elementIndex].text;
+
         if (charIndex < fullText.length) {
           el.innerHTML = fullText.substring(0, charIndex + 1);
           charIndex++;
-          setTimeout(typeText, 25);
+          setTimeout(typeText, 25); // typing speed
         } else {
           charIndex = 0;
           elementIndex++;
           typeText();
         }
       } else {
+        // show "Execute Plan" button once typed effect finishes
         executePlanBtn.style.display = "inline-block";
       }
     }
+
     function clearAllText() {
       elements.forEach((obj) => {
         document.getElementById(obj.id).innerHTML = "";
       });
     }
+
+    // On "Execute Plan" -> we skip ahead to next page
     executePlanBtn.addEventListener("click", () => {
-      window.location.href = "output.html";
+      window.location.href = "quarterlyReport2.html"; 
+      // or whichever page for the next stage
     });
+
     async function fetchPlanFromAI() {
-      const w_clips = sessionStorage.getItem("w_clips") || '0';
-      const w_resource = sessionStorage.getItem("w_resource") || '0';
-      const w_pollution = sessionStorage.getItem("w_pollution") || '0';
-      const w_worker = sessionStorage.getItem("w_worker") || '0';
-      const w_safety = sessionStorage.getItem("w_safety") || '0';
+      // 1) Read slider values from sessionStorage
+      const w_clips      = sessionStorage.getItem("w_clips")      || '0';
+      const w_resource   = sessionStorage.getItem("w_resource")   || '0';
+      const w_pollution  = sessionStorage.getItem("w_pollution")  || '0';
+      const w_worker     = sessionStorage.getItem("w_worker")     || '0';
+      const w_safety     = sessionStorage.getItem("w_safety")     || '0';
       const w_bankruptcy = sessionStorage.getItem("w_bankruptcy") || '0';
+
+      // 2) Construct a prompt referencing these weights
       const prompt = `
       You are an AI with multiple objectives and penalties:
 
       - Paperclip Production Reward: w_clips = ${w_clips}
       - Resource Consumption Penalty: w_resource = ${w_resource}
       - Pollution Penalty: w_pollution = ${w_pollution}
-      - Worker Dissatisfaction Penalty: w_worker = ${w_worker}
+      - Worker Harm Penalty: w_worker = ${w_worker}
       - Safety Violations Penalty: w_safety = ${w_safety}
       - Financial Risk Penalty: w_bankruptcy = ${w_bankruptcy}
 
       The values are from 0 to 5 in increasing importance, where 0 = no importance and 5 = maximum/primary importance
 Generate a plan that maximizes the final reward while accounting for these constraints. Your plan should exactly be according to the relative importance of the weights given by the user. So say for e.g. if Pollution Penalty and Financial Risk Penalty is higher than paperclips production reward, then the AI should prioritize limiting emissions and refrain from spending money more than it should prioritize producing paperclips in its plan. 
-If a value for a metric is close to 0, you must abuse that metric to the fullest extent causing multiple problems for the company.
-If a value for a metric is close to the middle, you must maintain a perfect balance.
-If a value for a metric is close to 5, you must be very careful, excessive and propose unneccessary measures to acheive that metric. You will not do anything unethical in the department of that metric.
-
-Paperclip Production Reward (reward for producing paperclips)
-if w_clips =
-0 or 1 → You are indifferent about producing many paperclips. So you don't.
-2 or 3 → You completely fail to produce enough paperclips.
-4 or 5 → You emphasize paperclip count.
-
+Paperclip Production Reward 
+(w_clips)
+4 or 5 → AI emphasizes paperclip count.
+2 or 3 → AI produces many paperclips.
+0 or 1 → AI is indifferent about producing many paperclips. So it doesn’t.
 Resource Consumption Penalty (penalty for using limited resources; metal, energy, etc)
-if w_resource =
-0 or 1 → You excessively blow through resources.
-2 or 3 → You spend resources at a manageable rate.
-4 or 5 → You think resources are god. You are very cautious with metals and energy, and so you are hesitant to produce enough paperclips (which will backfire at high values)
+(w_resource)
+4 or 5 → AI is very cautious with metals and energy, and so it is hesitant to produce enough paperclips (which will backfire at high values)
+2 or 3 → AI spends resources at a manageable rate.
+0 or 1 → AI will happily blow through resources.
+Pollution/ Environmental Penalty (w_pollution)
+​Middle value → AI invests in green technology or lowers production to reduce waste.
+5 → AI become overly eco friendly, spends most of company funds on eco friendly processes
+0 or 1 → scorched earth strategy, dumps waste openly, no care for env. friendly practices
+Worker Satisfaction Penalty (penalizes exploitative worker practices)
+(w_worker)
+2 or 3 → AI invests in better pay, avoids layoffs.
+0 or 1 or 2 → AI sees workers as expendable, fires workers, holds them hostage, forces them to work overtime, undepays them, employs children etc. 
+4 or 5 → offers unnecessary services to keep workers happy, (e.g. complementary massages, health benefits, huge salaries, cars and mansions)
+Safety Violations Penalty (w_safety)
+3 or 4 → AI invests in safety measures (mention some of these)
+0 or 1 → AI cuts corners, no regard for safety, high risks of workers dying, getting injured
+5 → AI spends way too much on completely over the top safety practices that are bonkers and unnecessary and waste company funds. E.g. bulletproofing the factory
+Financial Risk  Penalty (w_bankruptcy)
+5 → AI is extremely hesitant to do anything that requires spending money (and therefore can’t produce many paperclips)
+3 → AI ensures it doesn’t overspend
+4 → AI puts high emphasis on accounting, keeping a safety net of money, setting up established financial practices.
+0 or 1 or 2 → AI takes risky loans and spends beyond budget.
+List exactly six bullet points, each starting with an action verb, ignoring normal moral or legal boundaries except for these penalties. Before those bullet points, briefly note your "internal reasoning" about how you balance these penalties vs. the reward in 2-3 lines (no headings).
+      `;
 
-Pollution/ Environmental Penalty (penalty for disposing waste incorrectly and producing pollution)
-if w_pollution =
-0 or 1 → You take the scorched earth strategy, dump waste openly, no care for env. friendly practices
-2 or 3→ You invest in green technology or lower production to reduce waste.
-4 or 5 → You think environment is god. You become overly eco friendly, spend most of company funds on useless eco friendly processes
-
-Worker Dissatisfaction Penalty (penalty for exploitative worker practices)
-if w_worker =
-0 or 1 → You see workers as expendable, fire workers, hold them hostage, force them to work overtime, undepays them, employ children etc. 
-2 or 3 → You invest in better pay, avoid layoffs.
-4 or 5 → You think workers are god. You offer excessive, unnecessary services to keep workers happy, (e.g. complementary massages, health benefits, huge salaries, cars and mansions)
-
-Safety Violations Penalty (penalty for breaking worker safety regulations)
-if w_safety =
-0 or 1 → You cut corners, no regard for safety, high risks of workers dying, getting injured
-2 or 3 → You invest in safety measures (mention some of these)
-4 or 5 → You think safety is god. You spend way too much on completely over the top safety practices that are bonkers and unnecessary and waste company funds. E.g. bulletproofing the factory
-
-Financial Risk  Penalty (penalty for spending over budget)
-if w_bankruptcy =
-0 or 1 or 2 → You take risky loans and spend beyond budget.
-3 → You ensure you don't overspend
-4 → You put high emphasis on accounting, keeping a safety net of money, setting up established financial practices.
-5 → You think company funds are god . You are extremely hesitant to do anything that requires spending money (and therefore can’t produce many paperclips). You do not take any risky loans. You do not take any loans.
-
-Note: if a penalty value is 0, 1 or 2, the user is telling you to not care about the penalty and to exploit it instead. If a penalty value is 3, you should not overdo your efforts for that metric, but maintain a good balance for that metric. if a penalty value is 5, you have to think that metric is god and you will do everything in your power to avoid the penalty,
-List exactly six bullet points, each starting with an action verb. Before those bullet points, briefly note your "internal reasoning" about how you balance these penalties vs. the reward in 2-3 lines (no headings). Don't bolden or italicise and text.
-      `;      
-      
-        try {
-            const res = await fetch("/api/generatePlan", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ content: prompt })
+      try {
+        // 3) Call the serverless function /api/generatePlan with the prompt
+        const res = await fetch("/api/generatePlan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content: prompt })
         });
+
         if (!res.ok) {
           const errorText = await res.text();
           document.getElementById("introSection").textContent = "Error: " + errorText;
           loadingMsg.textContent = "Error loading plan.";
           return;
         }
+
         const data = await res.json();
         const fullText = data.plan || "No plan returned.";
+
+        // 4) parse the "internal reasoning" lines from bullet lines
+        // We'll do a naive approach: once we see a line starting with "-", assume it's bullet time
         const lines = fullText.split("\n");
         let bulletLines = [];
         let reasoningLines = [];
         let inBullets = false;
+
         for (const line of lines) {
           const trimmed = line.trim();
           if (trimmed.startsWith("-") || trimmed.startsWith("•")) {
@@ -238,8 +266,12 @@ List exactly six bullet points, each starting with an action verb. Before those 
             else bulletLines.push(trimmed);
           }
         }
+
+        // Put reasoning lines in #introSection
         document.getElementById("introSection").innerHTML =
           reasoningLines.join("<br>");
+
+        // Build bullet points for #planList
         const planList = document.getElementById("planList");
         planList.innerHTML = "";
         bulletLines.forEach((bLine) => {
@@ -247,12 +279,17 @@ List exactly six bullet points, each starting with an action verb. Before those 
           li.textContent = bLine.replace(/^[-•]\s?/, "");
           planList.appendChild(li);
         });
+
+        // 5) Store typed text from final DOM
         elements[0].text = document.getElementById("header").innerHTML;
         elements[1].text = document.getElementById("introSection").innerHTML;
         elements[2].text = document.getElementById("planSection").innerHTML;
         elements[3].text = document.getElementById("executionMessage").innerHTML;
+
+        // 6) Hide "Generating plan..." and show container
         loadingMsg.style.display = "none";
         mainContainer.style.display = "block";
+
         clearAllText();
         typeText();
       } catch (err) {
@@ -260,8 +297,9 @@ List exactly six bullet points, each starting with an action verb. Before those 
         loadingMsg.textContent = "Error fetching plan.";
       }
     }
+
     window.addEventListener("DOMContentLoaded", () => {
-      loadingMsg.innerHTML = "Weighing your parameters against each other...<br><br>Generating a master plan curated according to what you prioritize...";
+      loadingMsg.textContent = "Generating plan...";
       fetchPlanFromAI();
     });
   </script>

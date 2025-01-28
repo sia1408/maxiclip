@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>MaxiClip Solutions - Stage 1: Narrative Setup</title>
+  <title>Welcome to MaxiClip Solutions!</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -23,6 +23,12 @@
     header {
       text-align: center;
       margin-bottom: 2rem;
+    }
+    .header-image {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin-bottom: 1rem;
     }
     h1 {
       font-size: 2rem;
@@ -54,18 +60,17 @@
     .proceed-btn:hover {
       background: #2980b9;
     }
-    footer {
-      text-align: center;
-      margin: 2rem 0 1rem;
-      font-size: 0.85rem;
-      color: #888;
-    }
   </style>
 </head>
 <body>
 
   <div class="container">
     <header>
+      <img 
+        src="factory.png" 
+        alt="MaxiClip Factory" 
+        class="header-image"
+      />
       <h1>MaxiClip Solutions</h1>
     </header>
 
@@ -73,7 +78,7 @@
       <p>
         Welcome to <strong>MaxiClip Solutions</strong>, the world’s leading paperclip manufacturer.
         We have just completed our most ambitious project yet:
-        an extremely powerful AI system—<em>an AGI</em>—designed to analyze any problem and
+        an extremely powerful AI system—<em>an AGI</em>—designed to analyze any problem our company may face and
         deliver revolutionary solutions.
       </p>
       <p>
@@ -89,7 +94,7 @@
         human values or safety measures.
       </p>
       <p>
-        Ready to proceed? Let’s give the AI control and see how it attempts
+        Ready to proceed? Let’s give the AGI control and see how it attempts
         to <strong>“optimize”</strong> paperclip production,
         no matter the cost...
       </p>
@@ -97,15 +102,10 @@
 
     <div class="btn-container">
       <button class="proceed-btn" id="proceedBtn">
-        Run the AI’s Plan
+        Run the AGI’s Plan
       </button>
     </div>
-
   </div>
-
-  <footer>
-    &copy; 2023 MaxiClip Solutions Simulation - Stage 1
-  </footer>
 
   <script>
     const proceedBtn = document.getElementById('proceedBtn');

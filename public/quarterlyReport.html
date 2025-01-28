@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>MaxiClip Solutions - Quarterly Report</title>
-  <!-- Include Chart.js via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* --- BASIC RESET & STYLES --- */
     * {
       margin: 0;
       padding: 0;
@@ -19,7 +17,6 @@
       line-height: 1.6;
     }
 
-    /* --- CONTAINER & LAYOUT --- */
     .container {
       width: 80%;
       max-width: 800px;
@@ -47,7 +44,6 @@
       color: #555;
     }
 
-    /* --- REPORT SECTION --- */
     .report-section {
       margin: 2rem 0;
     }
@@ -63,7 +59,6 @@
       color: #2c3e50;
     }
 
-    /* --- ADDITIONAL NOTES --- */
     .notes {
       background: #fcf8e3;
       border-left: 5px solid #f1c40f;
@@ -72,7 +67,6 @@
       margin-top: 1.5rem;
     }
 
-    /* --- GRAPH CONTAINER --- */
     .graphs-container {
       margin: 2rem 0;
       display: grid;
@@ -94,7 +88,6 @@
       height: 220px;
     }
 
-    /* --- BUTTONS & INTERACTIONS --- */
     .btn-container {
       text-align: center;
       margin: 2rem 0;
@@ -114,13 +107,6 @@
       background: #27ae60;
     }
 
-    /* --- FOOTER --- */
-    footer {
-      text-align: center;
-      margin: 3rem 0 1rem;
-      font-size: 0.85rem;
-      color: #888;
-    }
   </style>
 </head>
 <body>
@@ -131,31 +117,24 @@
       <h2 id="reportSubheader"></h2>
     </header>
 
-    <!-- TYPED TEXT SECTION -->
     <section class="report-section" id="reportSection">
-      <!-- Will be filled by typing effect -->
     </section>
 
-    <!-- OPTIONAL CHARTS -->
     <div class="graphs-container" id="chartsSection" style="display: none;">
-      <!-- Paperclips Over Time -->
       <div class="graph-canvas">
         <canvas id="chartPaperclips"></canvas>
       </div>
 
-      <!-- Pollution Over Time -->
       <div class="graph-canvas">
         <canvas id="chartPollution"></canvas>
       </div>
 
-      <!-- Finances Over Time -->
       <div class="graph-canvas">
         <canvas id="chartFinances"></canvas>
       </div>
     </div>
 
     <div class="notes" id="notes">
-      <!-- Additional notes after the main scoreboard -->
     </div>
 
     <div class="btn-container">
@@ -165,44 +144,26 @@
     </div>
   </div>
 
-  <footer>
-    &copy; 2023 MaxiClip Solutions Simulation - Stage 1
-  </footer>
-
   <script>
-    /* 
-     * This script reveals the final quarterly report in a "typing" style,
-     * then displays additional notes and draws the charts using Chart.js.
-     * Finally, it shows the "ReflectionBtn" button.
-     */
-
-    // Data lines for the scoreboard
     const scoreboardData = [
       "Paperclips Produced: 2,000,000",
       "Environmental Violations: 14",
       "Worker Lawsuits: 22",
-      "Bank Loan Debt: $10,000,000,000",
-      "Net Revenue: -$500,000,000"
+      "Bank Loan Debt: $3,400,000",
+      "Net Revenue: -$700,000"
     ];
 
-    // Additional notes
     const additionalNotes = [
       "- Significant brand damage due to forced labor allegations",
       "- Massive public backlash over environmental hazards",
       "- Multiple government probes launched into misconduct"
     ];
 
-    // Chart data placeholders (Over 4 months)
     const months = ["Month 1", "Month 2", "Month 3", "Month 4"];
 
-    // Paperclips growth each month
     const paperclipData = [100000, 500000, 1200000, 2000000];
 
-    // Pollution incidents each month
     const pollutionData = [2, 6, 10, 14];
-
-    // Finances each month
-    // (negative values = net losses; we make them more negative over time)
     const financeData = [-10000000, -250000000, -400000000, -500000000];
 
     const reportSection = document.getElementById("reportSection");
@@ -217,10 +178,8 @@
     let isNotesPhase = false;
     let noteIndex = 0;
 
-    // Show subheader immediately
     reportSubheader.textContent = "Quarter 2 (4 Months Later)";
 
-    // Typing effect for scoreboard lines
     function typeReportLine() {
       if (!isNotesPhase && currentLineIndex < scoreboardData.length) {
         const text = scoreboardData[currentLineIndex];
@@ -234,9 +193,8 @@
         currentCharIndex++;
 
         if (currentCharIndex < text.length) {
-          setTimeout(typeReportLine, 30); // speed of typing
+          setTimeout(typeReportLine, 30); //typin speed
         } else {
-          // Done typing this line
           currentLineIndex++;
           currentCharIndex = 0;
           currentLineElement = null;
@@ -244,13 +202,11 @@
         }
       }
       else if (!isNotesPhase) {
-        // Switch to note lines
         isNotesPhase = true;
         typeNotes();
       }
     }
 
-    // Reveal additional notes
     function typeNotes() {
       if (noteIndex < additionalNotes.length) {
         const line = additionalNotes[noteIndex];
@@ -260,15 +216,12 @@
         noteIndex++;
         setTimeout(typeNotes, 300);
       } else {
-        // Done with notes → show charts
         chartsSection.style.display = "grid";
         drawCharts();  
       }
     }
 
-    // Draw charts with Chart.js
     function drawCharts() {
-      // Paperclips Over Time
       const ctxPaperclips = document.getElementById("chartPaperclips").getContext("2d");
       new Chart(ctxPaperclips, {
         type: "line",
@@ -294,7 +247,6 @@
         }
       });
 
-      // Pollution Over Time
       const ctxPollution = document.getElementById("chartPollution").getContext("2d");
       new Chart(ctxPollution, {
         type: "line",
@@ -320,7 +272,6 @@
         }
       });
 
-      // Finances Over Time
       const ctxFinances = document.getElementById("chartFinances").getContext("2d");
       new Chart(ctxFinances, {
         type: "line",
@@ -340,28 +291,22 @@
           responsive: true,
           scales: {
             y: {
-              // Because these are negative values, set the min a bit lower
-              // or allow Chart.js to auto-scale.
               beginAtZero: false
             }
           }
         }
       });
 
-      // After drawing charts, show "ReflectionBtn" button
       setTimeout(() => {
         ReflectionBtn.style.display = "inline-block";
       }, 1000);
     }
 
-    // Start typing on page load
     window.addEventListener("DOMContentLoaded", () => {
       typeReportLine();
     });
 
-    // Next Stage button
     ReflectionBtn.addEventListener("click", () => {
-      // e.g., redirect to "reflection.html"
       window.location.href = "reflection.html";
     });
   </script>

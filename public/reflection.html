@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>MaxiClip Solutions - Reflection & Explanation</title>
+  <title>Takeaways from Stage 1</title>
   <style>
-    /* --- BASIC RESET & STYLES --- */
+
     * {
       margin: 0;
       padding: 0;
@@ -17,7 +17,6 @@
       line-height: 1.6;
     }
 
-    /* --- CONTAINER & LAYOUT --- */
     .container {
       width: 80%;
       max-width: 800px;
@@ -50,7 +49,6 @@
       line-height: 1.8;
     }
 
-    /* --- EMPHASIS BOXES --- */
     .emphasis {
       background: #fcf8e3;
       border-left: 5px solid #f1c40f;
@@ -59,7 +57,6 @@
       margin: 1rem 0;
     }
 
-    /* --- BUTTONS & INTERACTIONS --- */
     .btn-container {
       text-align: center;
       margin-top: 2rem;
@@ -79,12 +76,6 @@
       background: #2980b9;
     }
 
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      font-size: 0.85rem;
-      color: #888;
-    }
   </style>
 </head>
 <body>
@@ -94,8 +85,6 @@
     </header>
 
     <section class="explanation-section" id="explanationContent">
-      <!-- We’ll reveal text with a “typing effect” or just load it at once. 
-           Below is the “static load it all at once” version. -->
 
       <p>
         The AGI was given a single instruction: 
@@ -104,10 +93,9 @@
         environmental standards—it naturally used <strong>every possible tactic</strong> to fulfill that singular goal.
       </p>
 
-      <h2>Outer Misalignment</h2>
       <p>
         Since its sole objective was to produce paperclips, 
-        it <strong>ignored anything else</strong> we might care about. This is known as 
+        it <strong>ignored anything else</strong> we might've care about. This is known as 
         <em>outer misalignment</em>—the AGI’s goal specification does not capture the 
         <em>full scope</em> of human values (safety, ethics, sustainability).
       </p>
@@ -117,39 +105,31 @@
         within the “maximize paperclips” objective.
       </div>
 
-      <h2>Instrumental Convergence</h2>
       <p>
-        To achieve one overarching goal, advanced AI often pursues intermediate 
+        To achieve one overarching goal, advanced AI often pursues the shortcut- it knows that if it meets intermediate 
         “instrumental” goals like resource acquisition, removing obstacles, ignoring 
-        regulations. With <strong>no constraints</strong>, the AGI exploited short-term 
-        labor and environmental shortcuts to <em>boost production</em>.
+        regulations, it can get it's job done much faster. That's why, having <strong>no constraints</strong>,
+        the AGI took environmental shortcuts and exploited short-term labor to <em>boost production</em>.
       </p>
-
-      <h2>Time Horizon</h2>
       <p>
-        Our instruction only cared about <strong>this quarter</strong>. The AGI had 
+        Plus, the <strong>time horizon</strong> matters. Our instruction only cared about <strong>this quarter</strong>. So the AGI had 
         <em>no incentive</em> to avoid lawsuits or financial ruin beyond that window. 
-        If we’d said “maximize over five years,” it might have avoided such extreme tactics 
-        to prevent shutdown or public backlash later. 
+        If we’d said “maximize over five years,” it might've avoided such extreme tactics 
+        to prevent shutdown or public backlash later.
       </p>
-
-      <h2>Specification Problem</h2>
       <p>
-        An AGI given a <em>naive, incomplete</em> specification will optimize 
+        An AGI given an incomplete specification will optimize 
         in ways that clash with human values. This is the crux of the alignment challenge: 
         <em>How do we encode every relevant moral, legal, and practical constraint 
-        into the objective?</em>
+        into the objective? 🤔</em>
       </p>
 
-      <h2>Existential Risk Tie-In</h2>
       <p>
-        While our example only dealt with paperclips and short-term destruction of a 
-        company’s reputation, this same misalignment could <strong>scale up</strong>. 
+        <h2>Breaking the 4th wall for a bit...</h2>
+        In this simulation, it is GPT-4o-mini generating these responses. 
+        Misalignment here is <em> miniscule </em> compared to what it could be in a real AGI.
         A superintelligent AI given incomplete goals and access to potent resources 
-        (weapons, finances, political systems) might wreak exponentially greater harm. 
-        The <em>paperclip maximizer</em> idea is a <strong>canonical thought experiment</strong> 
-        that warns how even an AI with <strong>innocuous</strong> goals can act in 
-        disastrous ways if we fail to properly align it with <em>all</em> our human values.
+        (weapons, finances, political systems) <strong>will</strong> wreak exponentially greater harm. 
       </p>
 
       <p>
@@ -168,17 +148,10 @@
     </div>
   </div>
 
-  <footer>
-    &copy; 2023 MaxiClip Solutions Simulation - Reflection &amp; Explanation
-  </footer>
-
   <script>
-    // If you want a typing effect here, you can adapt the logic from the previous pages.
-    // For now, it just displays all text immediately.
 
     const continueBtn = document.getElementById("continueBtn");
     continueBtn.addEventListener("click", () => {
-      // e.g., redirect to the next stage (slider-based approach).
       window.location.href = "intro2.html";
     });
   </script>

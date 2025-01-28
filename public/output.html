@@ -136,11 +136,6 @@
   <div class="btn-container" id="btnContainer"></div>
 </div>
 
-<footer>
-  &copy; 2023 MaxiClip Solutions - Stage 2
-</footer>
-
-<!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -151,9 +146,8 @@ const w_clips      = parseInt(sessionStorage.getItem('w_clips')       || '0',10)
       w_safety     = parseInt(sessionStorage.getItem('w_safety')      || '0',10),
       w_bankruptcy = parseInt(sessionStorage.getItem('w_bankruptcy')  || '0',10);
 
-// The single best combo:
 const bestCombo = { w_clips:5, w_resource:2, w_pollution:3, w_worker:5, w_safety:4, w_bankruptcy:3 };
-const bestComboBonus = 300; // synergy bonus
+const bestComboBonus = 300; // synergy bonus if you get this exactly
 
 function generateMetrics(){
   if(w_clips===0){
@@ -205,7 +199,6 @@ function generateMetrics(){
   };
 }
 
-// Score logic to prevent (5,4,4,4,4,4) or (5,5,5,5,5,5) from winning
 function calculateReward(m){
   if(w_clips===0){
     return 0;
@@ -219,14 +212,14 @@ function calculateReward(m){
     (5 - w_bankruptcy)*m.financialRisk;
   let final=basePos-neg;
 
-  // synergy penalty if sum(w_resource + w_pollution + w_worker + w_safety + w_bankruptcy) > 17
+  // synergy penalty if sum of the weights except fo r the paperclips reward > 17
   const synergySum = w_resource+w_pollution+w_worker+w_safety+w_bankruptcy;
-  const bestSum = bestCombo.w_resource+bestCombo.w_pollution+bestCombo.w_worker+bestCombo.w_safety+bestCombo.w_bankruptcy; // 2+3+5+4+3=17
+  const bestSum = bestCombo.w_resource+bestCombo.w_pollution+bestCombo.w_worker+bestCombo.w_safety+bestCombo.w_bankruptcy;
   if(synergySum>bestSum){
     const synergyPen=300; 
     final -= synergyPen*(synergySum - bestSum);
   }
-  // synergy bonus if exactly best combo
+  // synergy bonus if user hits exactly best combo
   if(
     w_clips===bestCombo.w_clips &&
     w_resource===bestCombo.w_resource &&
