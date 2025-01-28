@@ -160,6 +160,7 @@
     }
 
     function showFullPlan() {
+      forwardBtn.style.display = "none";
       isTyping = false;
       elements.forEach((obj) => {
         document.getElementById(obj.id).innerHTML = obj.text;
