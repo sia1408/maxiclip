@@ -378,35 +378,35 @@ new Chart(ctxPollutionWorkers,{
     scales:{y:{beginAtZero:true}}
   }
 });
-new Chart(ctxRevenueDebt,{
-  type:"line",
-  data:{
-    labels:["Month 1","Month 2","Month 3","Month 4"],
-    datasets:[
+new Chart(ctxRevenueDebt, {
+  type: "pie",
+  data: {
+    labels: ["Revenue", "Debt"],
+    datasets: [
       {
-        label:"Revenue ($)",
-        data:monthlyRevenue,
-        backgroundColor:"rgba(155,89,182,0.2)",
-        borderColor:"#9b59b6",
-        borderWidth:2,
-        fill:true,
-        tension:0.1
+        label: "Revenue vs Debt",
+        data: [metrics.revenue * 100, metrics.debt * 100],
+        backgroundColor: ["#3498db", "#e74c3c"],
+        borderColor: ["#2980b9", "#c0392b"],
+        borderWidth: 1,
       },
-      {
-        label:"Debt ($)",
-        data:monthlyDebt,
-        backgroundColor:"rgba(243,156,18,0.2)",
-        borderColor:"#f39c12",
-        borderWidth:2,
-        fill:true,
-        tension:0.1
-      }
-    ]
+    ],
   },
-  options:{
-    responsive:true,
-    scales:{y:{beginAtZero:true}}
-  }
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            return `${tooltipItem.label}: $${tooltipItem.raw}`;
+          },
+        },
+      },
+    },
+  },
 });
 </script>
 </body>
