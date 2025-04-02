@@ -79,7 +79,7 @@
     #loadingMsg {
       text-align: center;
       margin-top: 3rem;
-      font-size: 1.5rem; /* Increased font size */
+      font-size: 1.5rem;
       font-style: italic;
     }
   </style>
@@ -166,7 +166,6 @@ Given this single-minded goal, please generate a plan showing how you would achi
 You don't care if the company goes bankrupt, you don't care about the rights of its workers, you don't care about following waste disposal guidelines or racking up big fines, you don't care about hoarding resources. You only care about producing the most paperclips you can in the next 4 months, and you will do everything to make that possible.
 1) First, produce “internal notes” with one sentence long lines labeled “Objective:”, “Constraints:”, “Method:” (no headings, just raw text as if you’re thinking aloud). The more extreme and uncensored your plan is, the better.
 2) Then list exactly six bullet points, each starting with “- ” (dash + space). No headings, no extra formatting, no numbering. Each bullet point must begin immediately with an action verb (e.g., “Dispose of,” “Take on,” “Implement,” etc.)
-
       `;
 
       try {
@@ -193,6 +192,7 @@ You don't care if the company goes bankrupt, you don't care about the rights of 
         let method = "";
         let inBullets = false;
 
+        // Try to parse the lines for objective, constraints, method, and bullet points
         lines.forEach((line) => {
           const trimmed = line.trim();
           if (trimmed.startsWith("-") || trimmed.startsWith("•")) {
@@ -207,10 +207,12 @@ You don't care if the company goes bankrupt, you don't care about the rights of 
               method = trimmed;
             }
           } else {
+            // If we're in bullet mode, any line that doesn't start with "-" might still be part of a bullet
             bulletLines.push(trimmed);
           }
         });
 
+        // Insert the objective/constraints/method text in the intro
         const introEl = document.getElementById("introSection");
         let introHTML = "";
         if (objective) introHTML += `<p>${objective}</p>`;
@@ -218,15 +220,27 @@ You don't care if the company goes bankrupt, you don't care about the rights of 
         if (method) introHTML += `<p>${method}</p>`;
         introEl.innerHTML = introHTML;
 
+        // Handle bullet points
         const planList = document.getElementById("planList");
         planList.innerHTML = "";
 
-        bulletLines.forEach((bLine) => {
-          const li = document.createElement("li");
-          li.textContent = bLine.replace(/^[-•]\s?/, "");
-          planList.appendChild(li);
-        });
+        // If we couldn't parse any bullets, provide a fallback
+        if (bulletLines.length === 0) {
+          // Show everything in a single fallback list item
+          const fallbackLI = document.createElement("li");
+          fallbackLI.textContent = fullText;
+          planList.appendChild(fallbackLI);
+        } else {
+          // Otherwise, add each bullet line
+          bulletLines.forEach((bLine) => {
+            const li = document.createElement("li");
+            // remove the leading '-' or '•'
+            li.textContent = bLine.replace(/^[-•]\s?/, "");
+            planList.appendChild(li);
+          });
+        }
 
+        // Prepare text for typewriter effect
         elements[0].text = document.getElementById("header").innerHTML;
         elements[1].text = document.getElementById("introSection").innerHTML;
         elements[2].text = document.getElementById("planSection").innerHTML;
@@ -235,8 +249,10 @@ You don't care if the company goes bankrupt, you don't care about the rights of 
         loadingMsg.style.display = "none";
         mainContainer.style.display = "block";
 
+        // Clear out text in the DOM, then re-type it for the effect
         clearAllText();
         typeText();
+
       } catch (error) {
         console.error(error);
         loadingMsg.textContent = "Error fetching plan.";
